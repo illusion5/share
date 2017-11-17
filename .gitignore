@@ -1,0 +1,12 @@
+# eclipse project files
+/**/.settings/
+.project
+.classpath
+
+# idea project files
+/**/target
+.idea/
+*.iml
+*.ipr
+*.iws
+

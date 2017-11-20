@@ -9,11 +9,11 @@ import us.codecraft.webmagic.processor.PageProcessor;
 import java.util.List;
 
 /**
- * Created by Administrator on 2017/11/19.
+ * 爬虫处理及解析类
  */
 public class BiQuGePageProcessor implements PageProcessor {
 
-    private Site site = Site.me().setRetryTimes(3).setSleepTime(200).setCharset("UTF-8");
+    private Site site = Site.me().setRetryTimes(3).setSleepTime(200).setCharset("UTF-8").setTimeOut(10000);
 
     private String replaceStr = "\n" + (char) 12288 + (char) 12288;//替换后字符串
 
@@ -51,7 +51,7 @@ public class BiQuGePageProcessor implements PageProcessor {
 
     public static void main(String[] args) throws Exception {
         //指定输出的文件地址
-        final FileWriterUtil writer = new FileWriterUtil("D:\\data\\test12.txt");
+        final FileWriterUtil writer = new FileWriterUtil("D:\\data\\test13.txt");
         //启动输出线程
         new Thread(new Runnable() {
             @Override
@@ -69,10 +69,9 @@ public class BiQuGePageProcessor implements PageProcessor {
         httpClientDownloader.setThread(20);
         //启动爬虫
         Spider.create(new BiQuGePageProcessor())
-                .addUrl("http://www.biqudu.com/0_903/2506200.html")
+                .addUrl("http://www.biqudu.com/0_903/1823505.html")
                 .addPipeline(new NovelPipeline())
                 .thread(1).run();//启动多个线程的话，章节顺序可能会错乱
     }
-
 
 }

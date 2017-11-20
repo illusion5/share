@@ -83,12 +83,19 @@ public class InitativeBaiduPush {
         try {
             InputStream stream = InitativeBaiduPush.class.getClassLoader().getResourceAsStream("push-url.txt");
             BufferedReader br=new BufferedReader(new InputStreamReader(stream));
-            String s;
-            while ((s=br.readLine())!=null){
-                sb.append(s).append("\n");
+            int len;
+            char[] cbuf=new char[1024];
+            while ((len=br.read(cbuf))!=-1){
+                sb.append(cbuf,0,len);
             }
+
+            //下面这种方法也行
+//            String s;
+//            while ((s=br.readLine())!=null){
+//                sb.append(s).append("\n");
+//            }
 //            System.out.println(sb.toString().length());
-            return sb.toString().replaceAll("\\n+$","");//去掉最后的回车符，该行可以注释到
+//            return sb.toString().replaceAll("\\n+$","");//去掉最后的回车符，该行可以注释到
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -117,8 +124,8 @@ public class InitativeBaiduPush {
 
     @Test
     public void testGetUrl(){
-        System.out.println(getUrls().length());
-//        System.out.println(getUrls());
+//        System.out.println(getUrls().length());
+        System.out.println(getUrls());
     }
 
 

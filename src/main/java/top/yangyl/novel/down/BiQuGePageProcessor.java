@@ -20,7 +20,6 @@ public class BiQuGePageProcessor implements PageProcessor {
     @Override
     public void process(Page page) {
         List<String> all = page.getHtml().css("div.bottem2").links().all();//获取链接
-
 //        System.out.println(all.get(2));
 
         if (all.get(1).equals(all.get(2))) {//如果下一章链接内容 和目录链接相同 说明到最后一章了
@@ -31,6 +30,7 @@ public class BiQuGePageProcessor implements PageProcessor {
         //解析文章标题
         String title = page.getHtml().xpath("//div[@class=bookname]/h1/text()").toString();
 //        System.out.println(title);
+        page.putField("title",title);
 
         //解析文档内容
         String content = page.getHtml().xpath("//div[@id=content]/text()").toString();
@@ -48,17 +48,16 @@ public class BiQuGePageProcessor implements PageProcessor {
     }
 
 
-
     public static void main(String[] args) throws Exception {
-        //指定输出的文件地址
-        final FileWriterUtil writer = new FileWriterUtil("D:\\data\\test13.txt");
-        //启动输出线程
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                writer.startWriter();
-            }
-        }).start();
+//        //指定输出的文件地址
+//        final FileWriterUtil writer = new FileWriterUtil("D:\\data\\test13.txt");
+//        //启动输出线程
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                writer.startWriter();
+//            }
+//        }).start();
 
         HttpClientDownloader httpClientDownloader = new HttpClientDownloader();
         //设置代理ip
@@ -66,12 +65,12 @@ public class BiQuGePageProcessor implements PageProcessor {
 //                new Proxy("221.233.62.43",808)
 //                ,new Proxy("125.124.161.221",808)));
 
-        httpClientDownloader.setThread(20);
+        httpClientDownloader.setThread(30);
         //启动爬虫
         Spider.create(new BiQuGePageProcessor())
-                .addUrl("http://www.biqudu.com/0_903/1823505.html")
-                .addPipeline(new NovelPipeline())
-                .thread(1).run();//启动多个线程的话，章节顺序可能会错乱
+                .addUrl("http://www.biqudu.com/0_903/1823602.html")
+                .addPipeline(new NovelPipeline2("D:\\data"))
+                .thread(10).run();//启动多个线程的话，章节顺序可能会错乱
     }
 
 }

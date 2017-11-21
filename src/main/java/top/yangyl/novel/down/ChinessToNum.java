@@ -9,6 +9,10 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * 中文数字转阿拉伯数字工具类
+ * 该工具类没有做大量测试，可能会有bug存在
+ */
 public class ChinessToNum {
 
     private static final Map<String,Long> number=new HashMap();
@@ -31,6 +35,7 @@ public class ChinessToNum {
     }
 
     /**
+     * 方法一
      * 该方法仅适用于小于一万的转换,因为小说章节最多不会超过一万章
      * @param chiness
      * @return
@@ -63,6 +68,12 @@ public class ChinessToNum {
         return sum;
     }
 
+    /**
+     * 方法二
+     * 该方法仅适用于小于一万的转换,因为小说章节最多不会超过一万章
+     * @param chiness
+     * @return
+     */
     public static long convert(String chiness){
         long sum=0L;
         chiness=removeZero(chiness);
@@ -90,14 +101,11 @@ public class ChinessToNum {
     }
 
 
-    /**
-     * 去零操作
-     * @param chiness
-     * @return
-     */
+    //去零操作
     private static String removeZero(String chiness){
         return chiness.replaceAll("零","");
     }
+
 
     private static long getNum(String chiness,boolean isTen){
         if(StringUtils.isBlank(chiness)){
@@ -115,7 +123,5 @@ public class ChinessToNum {
         System.out.println(ChinessToNum.convert(""));
 
     }
-
-
 
 }

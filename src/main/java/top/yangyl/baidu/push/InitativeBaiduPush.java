@@ -1,12 +1,11 @@
 package top.yangyl.baidu.push;
 
 
-import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.junit.Test;
 
@@ -43,8 +42,7 @@ public class InitativeBaiduPush {
         CloseableHttpClient httpClient = null;
         try {
             //请求配置
-            RequestConfig config = RequestConfig.custom().setConnectTimeout(60000).setSocketTimeout(15000).build();
-            httpClient = HttpClientBuilder.create().setDefaultRequestConfig(config).build();
+            httpClient = HttpClients.createDefault();
             HttpPost httpPost=new HttpPost(url);
             httpPost.setHeader("Content-Type","text/plain");//可以注释到
             StringEntity entity = new StringEntity(urls, Charset.forName("UTF-8"));

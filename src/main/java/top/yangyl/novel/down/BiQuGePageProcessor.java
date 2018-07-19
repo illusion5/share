@@ -13,19 +13,19 @@ import java.util.List;
  */
 public class BiQuGePageProcessor implements PageProcessor {
 
-    private Site site = Site.me().setRetryTimes(3).setSleepTime(200).setCharset("UTF-8").setTimeOut(10000);
+    private Site site = Site.me().setRetryTimes(3).setSleepTime(200).setCharset("GBK").setTimeOut(50000);
 
     private String replaceStr = "\n" + (char) 12288 + (char) 12288;//替换后字符串
 
     @Override
     public void process(Page page) {
         List<String> all = page.getHtml().css("div.bottem2").links().all();//获取链接
-//        System.out.println(all.get(2));
+//        System.out.println(all);
 
-        if (all.get(1).equals(all.get(2))) {//如果下一章链接内容 和目录链接相同 说明到最后一章了
+        if (all.get(2).equals(all.get(3))) {//如果下一章链接内容 和目录链接相同 说明到最后一章了
             page.putField("end", "end");//设置结束标记
         } else {
-            page.addTargetRequest(all.get(2));//添加下一章的链接到处理队列
+            page.addTargetRequest(all.get(3));//添加下一章的链接到处理队列
         }
         //解析文章标题
         String title = page.getHtml().xpath("//div[@class=bookname]/h1/text()").toString();
@@ -68,9 +68,9 @@ public class BiQuGePageProcessor implements PageProcessor {
         httpClientDownloader.setThread(30);
         //启动爬虫
         Spider.create(new BiQuGePageProcessor())
-                .addUrl("http://www.biqudu.com/0_903/1823602.html")
+                .addUrl("http://www.bequge.com/8_8707/10181794.html")
                 .addPipeline(new NovelPipeline2("D:\\data"))
-                .thread(10).run();//启动多个线程的话，章节顺序可能会错乱
+                .thread(10).run();//启动多个线程的话，章节顺序可能会错
     }
 
 }

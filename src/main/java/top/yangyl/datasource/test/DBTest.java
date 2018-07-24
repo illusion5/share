@@ -17,22 +17,25 @@ public class DBTest {
                 "\t\t\t\t\tGROUP BY\n" +
                 "\t\t\t\t\t\tb.supplier_project_item_id\n" +
                 "\t\t\t\t\tHAVING\n" +
-                "\t\t\t\t\t\tb.supplier_project_item_id = #{supplierProjectItemId}),0)+1,\n" +
+                "\t\t\t\t\t\tb.supplier_project_item_id = ?),0)+1,\n" +
                 "            now(),\n" +
                 "            ?\n" +
                 "        )";
         List<Object> param=new ArrayList<>();
         param.add(123456789);
-//        for (int i=0;i<15;i++){
-            executor.execute(getTask(sql,param));
-//        }
+        param.add(123456789);
+        for (int i=0;i<15;i++){
+            executor.execute(getTask(sql, param));
+
+        }
     }
 
     private static Runnable getTask(final String sql, final List<Object> param){
         return new Runnable() {
             @Override
             public void run() {
-                DBUtils.execute(sql,param);
+                int i = DBUtils.execute(sql, param);
+                System.out.println(i);
             }
         };
     }

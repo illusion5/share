@@ -1,11 +1,17 @@
 package top.yangyl.datasource.test;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class DBTest {
+
+    private static Logger logger= LoggerFactory.getLogger(DBTest.class);
 
     public static void main(String[] args) {
         ExecutorService executor = Executors.newFixedThreadPool(15);
@@ -24,18 +30,26 @@ public class DBTest {
         List<Object> param=new ArrayList<>();
         param.add(123456789);
         param.add(123456789);
+        CountDownLatch latch=new CountDownLatch(15);
         for (int i=0;i<15;i++){
-            executor.execute(getTask(sql, param));
-
+            executor.execute(getTask(sql, param,latch));
         }
+        try {
+            latch.await();
+            executor.shutdown();
+        } catch (InterruptedException e) {
+            logger.error("异常",e);
+        }
+
     }
 
-    private static Runnable getTask(final String sql, final List<Object> param){
+    private static Runnable getTask(final String sql, final List<Object> param,final CountDownLatch latch){
         return new Runnable() {
             @Override
             public void run() {
                 int i = DBUtils.execute(sql, param);
-                System.out.println(i);
+                logger.info("影响{}几条数据",i);
+                latch.countDown();
             }
         };
     }

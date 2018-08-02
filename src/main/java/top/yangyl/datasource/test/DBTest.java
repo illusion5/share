@@ -44,13 +44,11 @@ public class DBTest {
     }
 
     private static Runnable getTask(final String sql, final List<Object> param,final CountDownLatch latch){
-        return new Runnable() {
-            @Override
-            public void run() {
-                int i = DBUtils.execute(sql, param);
+        return ()-> {
+                int i = DBUtils.execute(DataSourceUtils.getLocalDataSource(),sql, param);
                 logger.info("影响{}几条数据",i);
                 latch.countDown();
-            }
         };
     }
+
 }

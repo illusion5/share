@@ -121,7 +121,7 @@ public class ChinessToNum {
 
     public static void main(String[] args) {
         System.out.println(ChinessToNum.convert(""));
-
+        System.out.println(convert("五千一百"));
     }
 
 }
